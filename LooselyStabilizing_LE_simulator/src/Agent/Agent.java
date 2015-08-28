@@ -1,6 +1,6 @@
 package Agent;
 public class Agent {
-	public static final int s = 400;			//96ˆÈã‚Å3nˆÈã
+	public static final int s = 96;			//96ï¿½Èï¿½ï¿½3nï¿½Èï¿½
 	
 	private boolean leader;
 	private int timer;
@@ -8,7 +8,10 @@ public class Agent {
 	private double y; 
 	private double vx;
 	private double vy;
-	
+	/*å¤‰æ›´ç®‡æ‰€*/
+	private double destx;
+	private double desty;
+	/**/
 	
 	public Agent(boolean initleader, double inix, double iniy) {
 		this.leader = initleader;	
@@ -22,12 +25,12 @@ public class Agent {
 	public double getx(){ return this.x; }
 	public double gety(){ return this.y; }
 	
-	public void ShiftPointForRWP(){		//ƒ‰ƒ“ƒ_ƒ€ƒEƒFƒCƒ|ƒCƒ“ƒg‚Å‚Ìˆê•bŠÔ‚Ìshift
+	public void ShiftPointForRWP(){		//ï¿½ï¿½ï¿½ï¿½ï¿½_ï¿½ï¿½ï¿½Eï¿½Fï¿½Cï¿½|ï¿½Cï¿½ï¿½ï¿½gï¿½Å‚Ìˆï¿½bï¿½Ô‚ï¿½shift
 		this.x += this.vx;
 		this.y += this.vy;
 	}
 	
-	public void ShiftPointForTorus(int Gridsize){	//ƒg[ƒ‰ƒX“à‚Å‚Ìˆê•bŠÔ‚Ìshift
+	public void ShiftPointForTorus(int Gridsize){	//ï¿½gï¿½[ï¿½ï¿½ï¿½Xï¿½ï¿½ï¿½Å‚Ìˆï¿½bï¿½Ô‚ï¿½shift
 		this.x += this.vx;
 		if(this.x > Gridsize) this.x %= Gridsize;
 		if(this.x <  0) this.x += Gridsize;
@@ -36,10 +39,24 @@ public class Agent {
 		if(this.y <  0) this.y += Gridsize;
 	}
 	
-	public void Vchange(double ax, double ay){	//‘¬“x•Ï‰»
+	public void Vchange(double ax, double ay){	//ï¿½ï¿½ï¿½xï¿½Ï‰ï¿½
 		this.vx = ax;
 		this.vy = ay;
 	}
+	
+	/*å¤‰æ›´ç®‡æ‰€*/
+	public double getdestx(){
+		return this.destx;
+	}
+	
+	public double getdesty(){
+		return this.desty;
+	}
+	
+	public void DestinationSet(double Destx, double Desty){
+		this.destx = Destx; this.desty = Desty;
+	}
+	/**/
 	
 	public void Countdown(){
 		if(this.timer > 0) this.timer--;
@@ -62,7 +79,7 @@ public class Agent {
 		this.leader = isleader;
 	}
 	
-	public void ShowPoint() {		//Œ»İ‚ÌÀ•W‚ğ•\¦
+	public void ShowPoint() {		//ï¿½ï¿½ï¿½İ‚Ìï¿½ï¿½Wï¿½ï¿½\ï¿½ï¿½
 		System.out.print("x = " + this.x);
 		System.out.println("\t\ty = " + this.y);
 	}

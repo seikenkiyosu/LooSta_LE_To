@@ -6,7 +6,9 @@ import RandamPackage.*;
 class LooselyStabilizing_LE_simulator{
 	public static final int Gridsize = 100;
 	public static final int Roundnum = 1000000;
-	public static final int n = 100;
+	public static final int n = 20;
+	
+	public static String RandomMethod = "Torus";	//Torus or RWP(Random Way Point)
 	
 	public static void main(String args[]){
 		Random random = new Random();
@@ -34,24 +36,36 @@ class LooselyStabilizing_LE_simulator{
 				}
 			System.out.println("the number of leaders = " + leadercount);
 			int p, q;
-			while(true){					//Œğ—¬‚³‚¹‚éŒÂ‘Ì‚ğ‘I‚Ô
-				p = random.nextInt(n-1);		//ƒ‰ƒ“ƒ_ƒ€‚Éagent‚ğ‚Æ‚Á‚Ä‚­‚é
-				q = RandomWay.RandamPickNearAgent( p, n, agent);		//p‚Æ‹——£1ˆÈ“à‚É‚ ‚éƒm[ƒh‚Ì’†‚Å(ˆê”Ôid‚Ì’á‚¢)ƒm[ƒh‚ğq‚É‘ã“ü
-				if(q != -1) { 	//q‚ªŒ©‚Â‚©‚Á‚½‚çinteraction‚ğ‚µ‚ÄŸ‚Ìƒ‰ƒEƒ“ƒh‚Ö
-					Interaction.interaction(agent[p], agent[q]);	//Œğ—¬‚³‚¹‚é
-					for(int j=0; j<n; j++) agent[j].Countdown();	//timer‚ğƒJƒEƒ“ƒg‚·‚é
-					break;						//Ÿ‚Ìƒ‰ƒEƒ“ƒh‚Ö
+			while(true){					//ï¿½ğ—¬‚ï¿½ï¿½ï¿½ï¿½ï¿½Â‘Ì‚ï¿½Iï¿½ï¿½
+				p = random.nextInt(n-1);		//ï¿½ï¿½ï¿½ï¿½ï¿½_ï¿½ï¿½ï¿½ï¿½agentï¿½ï¿½ï¿½Æ‚ï¿½ï¿½Ä‚ï¿½ï¿½ï¿½
+				q = RandomWay.RandamPickNearAgent( p, n, agent);		//pï¿½Æ‹ï¿½ï¿½ï¿½1ï¿½È“ï¿½ï¿½É‚ï¿½ï¿½ï¿½mï¿½[ï¿½hï¿½Ì’ï¿½ï¿½ï¿½(ï¿½ï¿½ï¿½idï¿½Ì’á‚¢)ï¿½mï¿½[ï¿½hï¿½ï¿½qï¿½É‘ï¿½ï¿½
+				if(q != -1) { 	//qï¿½ï¿½ï¿½ï¿½ï¿½Â‚ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½interactionï¿½ï¿½ï¿½ï¿½ï¿½Äï¿½ï¿½Ìƒï¿½ï¿½Eï¿½ï¿½ï¿½hï¿½ï¿½
+					Interaction.interaction(agent[p], agent[q]);	//ï¿½ğ—¬‚ï¿½ï¿½ï¿½ï¿½ï¿½
+					for(int j=0; j<n; j++) agent[j].Countdown();	//timerï¿½ï¿½ï¿½Jï¿½Eï¿½ï¿½ï¿½gï¿½ï¿½ï¿½ï¿½
+					break;						//ï¿½ï¿½ï¿½Ìƒï¿½ï¿½Eï¿½ï¿½ï¿½hï¿½ï¿½
 				}
-				for(int j=0; j<n; j++){					//ŠeŒÂ‘ÌˆÚ“®
-					agent[j].Vchange((random.nextDouble()-0.5)*2 , (random.nextDouble()-0.5)*2 );
+				for(int j=0; j<n; j++){					//ï¿½eï¿½Â‘ÌˆÚ“ï¿½
+					/*å¤‰æ›´ç®‡æ‰€*/
+					if(RandomMethod=="Torus"){
+						agent[j].Vchange((random.nextDouble()-0.5)*2 , (random.nextDouble()-0.5)*2 );
+					}
+					else if(RandomMethod == "RWP") {
+						double movex = 0, movey = 0;
+						if(i==0 || Math.sqrt( (agent[j].getdestx()-agent[j].getx())*(agent[j].getdestx()-agent[j].getx()) - (agent[j].getdesty()-agent[j].gety())*(agent[j].getdesty()-agent[j].gety())) < 1){
+							agent[j].DestinationSet(random.nextInt(Gridsize-1) + random.nextDouble(), random.nextInt(Gridsize-1) + random.nextDouble());
+						}
+						movex = agent[j].getx()/Math.sqrt( (agent[j].getdestx()-agent[j].getx())*(agent[j].getdestx()-agent[j].getx()) - (agent[j].getdesty()-agent[j].gety())*(agent[j].getdesty()-agent[j].gety()));
+						movey = agent[j].gety()/Math.sqrt( (agent[j].getdestx()-agent[j].getx())*(agent[j].getdestx()-agent[j].getx()) - (agent[j].getdesty()-agent[j].gety())*(agent[j].getdesty()-agent[j].gety()));
+						agent[j].Vchange( movex, movey);
+					}
+					/**/
 					agent[j].ShiftPointForTorus(Gridsize);
-//					agent[j].ShowPoint();
 				}
 			}
 			CTcounter++;
-			if(CT!=0 && HT!=0 && HT+CT+1 < CTcounter) break;	//HT‚ªI‚í‚Á‚Ä‚ç‘¦I—¹‚µ‚½‚©‚Á‚½
+			if(CT!=0 && HT!=0 && HT+CT+1 < CTcounter) break;	//HTï¿½ï¿½ï¿½Iï¿½ï¿½ï¿½ï¿½Ä‚ç‘¦ï¿½Iï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 		}
 		System.out.println("CT = " + CT);
-		System.out.println("HT = " + HT++);
+		System.out.println("HT = " + HT);
 	}
 }
