@@ -1,7 +1,6 @@
 package Agent;
-public class Agent {
-	public static final int s = 96;			//96�ȏ��3n�ȏ�
-	
+public class Agent_To {
+
 	private boolean leader;
 	private int timer;
 	private double x;
@@ -13,7 +12,7 @@ public class Agent {
 	private double desty;
 	/**/
 	
-	public Agent(boolean initleader, double inix, double iniy) {
+	public Agent_To(boolean initleader, double inix, double iniy, int s) {
 		this.leader = initleader;	
 		this.timer = s;
 		this.x = inix; this.y = iniy;
@@ -67,7 +66,7 @@ public class Agent {
 		else return false;
 	}
 	
-	public void TimerReset(){
+	public void TimerReset(int s){
 		this.timer = s;
 	}
 	
